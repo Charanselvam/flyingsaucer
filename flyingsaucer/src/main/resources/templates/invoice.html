@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Invoice</title>
+    <link th:href="@{classpath:static/css/style.css}" rel="stylesheet" />
+</head>
+<body>
+    <!-- Header with Logo -->
+    <div class="header-container">
+        <div class="logo-container">
+            <img th:src="@{classpath:static/images/logo.png}" alt="Company Logo" class="logo" style="width:100px; height:auto;" />
+        </div>
+        <div class="invoice-header">
+            <h1 class="header">INVOICE</h1>
+            <div class="subheader">Official Business Document</div>
+        </div>
+        <div class="company-info">
+            <strong>Your Company Name</strong><br/>
+            123 Business Street<br/>
+            City, State 12345<br/>
+            Phone: (555) 123-4567<br/>
+            Email: info@yourcompany.com
+        </div>
+    </div>
+
+    <!-- Invoice Details -->
+    <div class="invoice-details">
+        <div class="detail-row">
+            <span class="detail-label">Invoice ID:</span>
+            <span class="detail-value" th:text="${invoiceId}">N/A</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Customer:</span>
+            <span class="detail-value" th:text="${customerName}">N/A</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Date:</span>
+            <span class="detail-value" th:text="${date}">N/A</span>
+        </div>
+    </div>
+
+    <!-- Items Table -->
+    <table>
+        <thead>
+            <tr>
+                <th>Item Description</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="item : ${items}">
+                <td th:text="${item.name}">Item Name</td>
+                <td th:text="${item.quantity}">1</td>
+                <td th:text="'$' + ${#numbers.formatDecimal(item.price, 1, 2)}">$0.00</td>
+                <td th:text="'$' + ${#numbers.formatDecimal(item.quantity * item.price, 1, 2)}">$0.00</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Total Amount -->
+    <div class="total">
+        Total Amount: <span th:text="'$' + ${#numbers.formatDecimal(totalAmount, 1, 2)}">$0.00</span>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        Thank you for your business!<br/>
+        Payment is due within 30 days. Please make checks payable to Your Company Name.<br/>
+        <small>Invoice generated on: <span th:text="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd HH:mm')}"></span></small>
+    </div>
+</body>
+</html>
